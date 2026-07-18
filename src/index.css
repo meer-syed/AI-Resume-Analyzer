@@ -1298,8 +1298,8 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 @media (max-width: 768px) {
   :root { --sidebar-w: 0px; }
   .page-content { padding: 1.25rem; }
-  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); }
-  .sidebar.mobile-open { transform: translateX(0); --sidebar-w: 260px; }
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); width: 260px !important; }
+  .sidebar.mobile-open { transform: translateX(0); }
   .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
   .hero-section { grid-template-columns: 1fr; padding: 3rem 0; }
   .hero-headline { font-size: 2.25rem; }

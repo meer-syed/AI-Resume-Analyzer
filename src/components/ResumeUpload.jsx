@@ -54,20 +54,24 @@ export default function ResumeUpload({ onParsingComplete }) {
     if (e.target.files?.[0]) validateAndProcessFile(e.target.files[0]);
   };
 
-  const startParsingFlow = (selectedFile) => {
+  const startParsingFlow = async (selectedFile) => {
     setIsParsing(true);
     setParsingStatus({ progress: 0, message: PARSING_STEPS[0].label, stepIndex: 0 });
-    simulateResumeParsing(
-      selectedFile,
-      (progress, message) => {
-        const stepIndex = Math.min(Math.floor((progress / 100) * PARSING_STEPS.length), PARSING_STEPS.length - 1);
-        setParsingStatus({ progress, message, stepIndex });
-      },
-      (parsedProfile) => {
-        setIsParsing(false);
-        onParsingComplete(parsedProfile, selectedFile.name);
-      }
-    );
+    try {
+      const parsedProfile = await simulateResumeParsing(
+        selectedFile,
+        ({ progress, message }) => {
+          const stepIndex = Math.min(Math.floor((progress / 100) * PARSING_STEPS.length), PARSING_STEPS.length - 1);
+          setParsingStatus({ progress, message, stepIndex });
+        }
+      );
+      setIsParsing(false);
+      onParsingComplete(parsedProfile, selectedFile.name);
+    } catch (err) {
+      console.error(err);
+      setError('Failed to parse the resume. Please try again.');
+      setIsParsing(false);
+    }
   };
 
   const resetUpload = () => {
